@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-import { SeachIcon } from "./SeachIcon";
-import { CheckIcon } from "./CheckIcon";
-import { CloseIcon } from "./CloseIcon";
-import { GearIcon } from "./GearIcon";
-import { BackIcon } from "./BackIcon";
+import { SeachIcon } from "@components/SeachIcon";
+import { CheckIcon } from "@components/CheckIcon";
+import { CloseIcon } from "@components/CloseIcon";
+import { GearIcon } from "@components/GearIcon";
+import { BackIcon } from "@components/BackIcon";
 
 function ChatMessage() {
   return (
@@ -77,7 +77,7 @@ function Chat() {
             <button>Nueva Búsqueda</button>
           </div>
           <hr />
-          <div className="bg-slate-50 p-4">
+          <div className="bg-slate-50 p-4 h-full">
             <div className="drop-shadow-sm p-4 bg-white">
               <div className="mb-3">
                 Ana Clara <span>05:00 pm</span>
@@ -95,8 +95,14 @@ function Chat() {
               </div>
             </div>
           </div>
-          <div>
-            <div className="flex p-4">fasdfs</div>
+          <div className="mt-auto">
+            <div className="flex p-4">
+              <input
+                type="text"
+                placeholder="Insertar prompt"
+                className="border-2 border-slate-400 rounded w-full p-2"
+              />
+            </div>
           </div>
         </main>
       </section>
