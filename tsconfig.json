@@ -3,6 +3,8 @@
     "paths": {
       "@/*": ["./src/*"],
       "@components/*": ["./src/components/*"],
+      "@views/*": ["./src/views/*"],
+      "@core/*": ["./src/core/*"],
     },
     "target": "ES2020",
     "useDefineForClassFields": true,
