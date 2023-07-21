@@ -1,9 +1,11 @@
 import { addNewConversation, useChat } from "./";
 import { useConfig } from "@/views/config";
+import { useSnackbar } from "notistack";
 import React from "react";
 
 export function NewChat() {
   const { state, dispatch } = useChat();
+  const { enqueueSnackbar } = useSnackbar();
   const { state: configState } = useConfig();
   const [newPrompt, setNewPrompt] = React.useState("");
 
@@ -17,7 +19,13 @@ export function NewChat() {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          addNewConversation(dispatch, state, configState, newPrompt);
+          addNewConversation(
+            dispatch,
+            state,
+            configState,
+            enqueueSnackbar,
+            newPrompt
+          );
           setNewPrompt("");
         }}
       >

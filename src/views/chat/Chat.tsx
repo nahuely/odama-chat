@@ -3,9 +3,11 @@ import { currentConversationSelector, sendMessage, useChat } from "./";
 import { useConfig } from "@/views/config";
 
 import React from "react";
+import { useSnackbar } from "notistack";
 
 export function Chat() {
   const { state, dispatch } = useChat();
+  const { enqueueSnackbar } = useSnackbar();
   const bottomRef = React.useRef(null);
   const { state: configState } = useConfig();
   const [newMessage, setNewMessage] = React.useState("");
@@ -53,7 +55,13 @@ export function Chat() {
                 className="w-full"
                 onSubmit={(e) => {
                   e.preventDefault();
-                  sendMessage(dispatch, state, configState, newMessage);
+                  sendMessage(
+                    dispatch,
+                    state,
+                    configState,
+                    enqueueSnackbar,
+                    newMessage
+                  );
                   setNewMessage("");
                 }}
               >

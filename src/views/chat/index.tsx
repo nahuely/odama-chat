@@ -5,6 +5,7 @@ import View from "./view";
 import { Conversation, Conversations } from "@core/entities/chat";
 import { API_ENDPOINT } from "@/core/constants";
 import { State as StateConfig } from "@/views/config";
+import { EnqueueSnackbar } from "notistack";
 
 type State = {
   error: string | null;
@@ -136,74 +137,91 @@ const addNewConversation = async (
   dispatch: Dispatch,
   state: State,
   configState: StateConfig,
+  enqueueSnackbar: EnqueueSnackbar,
   prompt: string
 ) => {
   const newConversationId = state.conversation.length + 1;
-  const response = await axios.post(
-    API_ENDPOINT,
-    {
-      model: configState.model,
-      messages: [
-        {
-          role: "user",
-          content: prompt,
-        },
-      ],
-      temperature: configState.temperature,
-      max_tokens: configState.maxTokens,
-    },
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${import.meta.env.VITE_OPEN_AI_KEY}`,
-      },
-    }
-  );
 
-  dispatch({
-    type: "add_conversation",
-    id: newConversationId,
-    request: prompt,
-    response: response.data.choices[0].message.content as string,
-  });
+  try {
+    const response = await axios.post(
+      API_ENDPOINT,
+      {
+        model: configState.model,
+        messages: [
+          {
+            role: "user",
+            content: prompt,
+          },
+        ],
+        temperature: configState.temperature,
+        max_tokens: configState.maxTokens,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${import.meta.env.VITE_OPEN_AI_KEY}`,
+        },
+      }
+    );
+
+    dispatch({
+      type: "add_conversation",
+      id: newConversationId,
+      request: prompt,
+      response: response.data.choices[0].message.content as string,
+    });
+  } catch (error) {
+    console.error(error);
+    enqueueSnackbar("Hubo un error al crear la conversacion", {
+      variant: "error",
+    });
+  }
 };
 
 const sendMessage = async (
   dispatch: Dispatch,
   state: State,
   configState: StateConfig,
+  enqueueSnackbar: EnqueueSnackbar,
   message: string
 ) => {
   const currentConversation = currentConversationSelector(state);
 
-  const response = await axios.post(
-    API_ENDPOINT,
-    {
-      model: configState.model,
-      messages: [
-        ...currentConversation!.messages,
-        {
-          role: "user",
-          content: message,
-        },
-      ],
-      temperature: configState.temperature,
-      max_tokens: configState.maxTokens,
-    },
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${import.meta.env.VITE_OPEN_AI_KEY}`,
+  try {
+    const response = await axios.post(
+      API_ENDPOINT,
+      {
+        model: configState.model,
+        messages: [
+          ...currentConversation!.messages,
+          {
+            role: "user",
+            content: message,
+          },
+        ],
+        temperature: configState.temperature,
+        max_tokens: configState.maxTokens,
       },
-    }
-  );
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${import.meta.env.VITE_OPEN_AI_KEY}`,
+        },
+      }
+    );
 
-  dispatch({
-    type: "add_message",
-    request: message,
-    response: response.data.choices[0].message.content,
-    conversationId: currentConversation!.id,
-  });
+    dispatch({
+      type: "add_message",
+      request: message,
+      response: response.data.choices[0].message.content,
+      conversationId: currentConversation!.id,
+    });
+  } catch (error) {
+    console.error(error);
+    enqueueSnackbar("Hubo un error al enviar el mensaje", {
+      variant: "error",
+    });
+  }
 };
 
 const currentConversationSelector = (state: State): Conversation | null => {

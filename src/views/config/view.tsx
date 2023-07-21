@@ -1,6 +1,7 @@
 import { BackIcon } from "@/components/BackIcon";
 import { Link } from "react-router-dom";
 import { useConfig } from ".";
+import { useSnackbar } from "notistack";
 import React from "react";
 
 function View() {
@@ -8,6 +9,7 @@ function View() {
   const [temperature, setTemperature] = React.useState(state.temperature);
   const [maxTokens, setMaxTokens] = React.useState(state.maxTokens);
   const [model, setModel] = React.useState(state.model);
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <div className="container mx-auto bg-slate-50 min-h-screen">
@@ -24,13 +26,22 @@ function View() {
 
           <form
             onSubmit={(e) => {
-              e.preventDefault();
-              dispatch({
-                type: "save_config",
-                temperature,
-                maxTokens,
-                model,
-              });
+              try {
+                e.preventDefault();
+                dispatch({
+                  type: "save_config",
+                  temperature,
+                  maxTokens,
+                  model,
+                });
+                enqueueSnackbar("Configuracion guardada", {
+                  variant: "success",
+                });
+              } catch (error) {
+                enqueueSnackbar("Hubo un error al guardar la configuracion", {
+                  variant: "error",
+                });
+              }
             }}
           >
             <div className="mb-6">
