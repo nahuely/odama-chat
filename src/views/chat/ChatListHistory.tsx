@@ -50,7 +50,7 @@ export function ChatListHistory() {
   return (
     <div className="rounded-md bg-white drop-shadow-md">
       <div className="p-6">
-        <h5>Historial de Búsquedas</h5>
+        <h5 className="font-bold">Historial de Búsquedas</h5>
       </div>
 
       <hr />

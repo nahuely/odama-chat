@@ -18,7 +18,9 @@ function View() {
       </nav>
       <section className="p-6">
         <div className="rounded-md bg-white p-6 drop-shadow-md">
-          <h3 className="text-xl text-slate-800 mb-3">Configuracion</h3>
+          <h3 className="text-xl text-slate-800 mb-3 font-bold">
+            Configuracion
+          </h3>
 
           <form
             onSubmit={(e) => {
@@ -31,40 +33,47 @@ function View() {
               });
             }}
           >
-            <div>
+            <div className="mb-6">
               <label className="block mb-2" htmlFor="temperature">
                 temperature
               </label>
-              <input
-                id="temperature"
-                type="range"
-                min="0"
-                max="2"
-                step="0.1"
-                defaultValue={state.temperature}
-                onChange={(e) => {
-                  setTemperature(Number(e.target.value));
-                }}
-                className="border-2 border-slate-400 rounded  p-2"
-              />
+              <div className="flex items-center">
+                <input
+                  id="temperature"
+                  type="range"
+                  min="0"
+                  max="2"
+                  step="0.1"
+                  defaultValue={state.temperature}
+                  onChange={(e) => {
+                    setTemperature(Number(e.target.value));
+                  }}
+                  className="mr-2"
+                />
+                <span className="text-slate-800">{temperature}</span>
+              </div>
             </div>
-            <div>
+            <div className="mb-6">
               <label className="block mb-2" htmlFor="tokens">
                 max tokens
               </label>
-              <input
-                id="tokens"
-                type="range"
-                min="0"
-                max="256"
-                step="1"
-                onChange={(e) => {
-                  setMaxTokens(Number(e.target.value));
-                }}
-                defaultValue={state.maxTokens}
-              />
+              <div className="flex items-center">
+                <input
+                  className="mr-2"
+                  id="tokens"
+                  type="range"
+                  min="0"
+                  max="256"
+                  step="1"
+                  onChange={(e) => {
+                    setMaxTokens(Number(e.target.value));
+                  }}
+                  defaultValue={state.maxTokens}
+                />
+                <span className="text-slate-800">{maxTokens}</span>
+              </div>
             </div>
-            <div>
+            <div className="mb-6">
               <label className="block mb-2" htmlFor="model">
                 model
               </label>

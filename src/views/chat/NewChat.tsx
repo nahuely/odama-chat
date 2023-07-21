@@ -9,7 +9,7 @@ export function NewChat() {
 
   return (
     <div className="rounded-md bg-white p-6 drop-shadow-md">
-      <h3 className="text-xl text-slate-800 mb-3">Sistema</h3>
+      <h3 className="text-xl text-slate-800 mb-3 font-bold">Sistema</h3>
       <p className="mb-6">
         Para conseguir una respuesta adecuada a tus necesidades, escribe un
         prompt para el sistema.

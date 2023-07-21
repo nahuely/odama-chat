@@ -17,7 +17,7 @@ export function Chat() {
   return (
     <main className="rounded-md bg-white drop-shadow-md flex flex-col h-full">
       <div className="flex p-6">
-        <div>OdamaChat</div>
+        <div className="font-bold">OdamaChat</div>
       </div>
       <hr />
       {currentConversationSelector(state) === null ? (
