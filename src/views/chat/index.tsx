@@ -65,7 +65,8 @@ const cardsReducer = (state: State, action: Action): State => {
     case "select_chat": {
       return {
         ...state,
-        currentConversation: action.id,
+        currentConversation:
+          action.id === state.currentConversation ? null : action.id,
       };
     }
     case "add_message": {
@@ -154,7 +155,7 @@ const addNewConversation = async (
     {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer fasdfs`,
+        Authorization: `Bearer ${import.meta.env.VITE_OPEN_AI_KEY}`,
       },
     }
   );
@@ -192,7 +193,7 @@ const sendMessage = async (
     {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer fasdfs`,
+        Authorization: `Bearer ${import.meta.env.VITE_OPEN_AI_KEY}`,
       },
     }
   );
