@@ -12,7 +12,7 @@ export function Chat() {
   }, [state.conversation]);
 
   return (
-    <main className="rounded-md bg-white w-4/6 drop-shadow-md flex flex-col">
+    <main className="rounded-md bg-white drop-shadow-md flex flex-col h-full">
       <div className="flex p-6">
         <div>OdamaChat</div>
       </div>

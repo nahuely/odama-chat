@@ -17,13 +17,15 @@ function View() {
           <GearIcon />
         </Link>
       </nav>
-      <section className="p-6 flex space-x-6">
-        <aside className="w-2/6 flex space-y-6 flex-col">
+      <section className="p-6 flex md:space-x-6 flex-col md:flex-row space-y-6 md:space-y-0">
+        <aside className="md:w-2/6 flex space-y-6 flex-col w-full">
           <NewChat />
 
           <ChatListHistory />
         </aside>
-        <Chat />
+        <div className="md:w-4/6 w-full">
+          <Chat />
+        </div>
       </section>
     </div>
   );
