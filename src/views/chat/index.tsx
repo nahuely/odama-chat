@@ -20,7 +20,8 @@ type Action =
       request: string;
       response: string;
       conversationId: number;
-    };
+    }
+  | { type: "delete_chat"; id: number };
 
 type Dispatch = (action: Action) => void;
 
@@ -30,6 +31,14 @@ const Context = React.createContext<
 
 const cardsReducer = (state: State, action: Action): State => {
   switch (action.type) {
+    case "delete_chat": {
+      return {
+        ...state,
+        conversation: state.conversation.filter(
+          (conversation) => conversation.id !== action.id
+        ),
+      };
+    }
     case "add_conversation": {
       return {
         ...state,

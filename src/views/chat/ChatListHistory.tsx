@@ -1,16 +1,17 @@
 import { Conversation } from "@/core/entities/chat";
 import { useChat } from "./";
 import { SeachIcon } from "@/components/SeachIcon";
-import { CheckIcon } from "@/components/CheckIcon";
-import { CloseIcon } from "@/components/CloseIcon";
+import { TrashIcon } from "@/components/TrashIcon";
 
 export function ChatMessage({
   conversation,
   onClick,
+  onDelete,
   currentConversation,
 }: {
   conversation: Conversation;
   onClick: (id: number) => void;
+  onDelete: (id: number) => void;
   currentConversation: boolean;
 }) {
   return (
@@ -29,12 +30,15 @@ export function ChatMessage({
         <div>{conversation.title}</div>
       </div>
       <div className="w-1/6 flex">
-        <div>
-          <CheckIcon />
-        </div>
-        <div>
-          <CloseIcon />
-        </div>
+        {!currentConversation && (
+          <div
+            onClick={() => {
+              onDelete(conversation.id);
+            }}
+          >
+            <TrashIcon />
+          </div>
+        )}
       </div>
     </div>
   );
@@ -62,6 +66,12 @@ export function ChatListHistory() {
               }
               key={conversation.id}
               conversation={conversation}
+              onDelete={(id) => {
+                dispatch({
+                  type: "delete_chat",
+                  id: id,
+                });
+              }}
               onClick={(id) => {
                 dispatch({
                   type: "select_chat",
