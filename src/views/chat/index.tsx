@@ -7,7 +7,6 @@ import { API_ENDPOINT } from "@/core/constants";
 
 type State = {
   error: string | null;
-  loading: boolean;
   conversation: Conversations;
   currentConversation: number | null;
 };
@@ -94,10 +93,12 @@ const cardsReducer = (state: State, action: Action): State => {
 };
 
 const ChatProvider = () => {
+  const conversations = JSON.parse(
+    localStorage.getItem("conversations")!
+  ) as Conversations;
   const [state, dispatch] = React.useReducer(cardsReducer, {
     error: null,
-    loading: true,
-    conversation: [],
+    conversation: conversations,
     currentConversation: null,
   });
 
@@ -108,6 +109,10 @@ const ChatProvider = () => {
     }),
     [state]
   );
+
+  React.useEffect(() => {
+    localStorage.setItem("conversations", JSON.stringify(state.conversation));
+  }, [state]);
 
   return (
     <Context.Provider value={value}>
@@ -138,7 +143,7 @@ const addNewConversation = async (
     {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer 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`,
+        Authorization: `Bearer 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`,
       },
     }
   );
@@ -175,7 +180,7 @@ const sendMessage = async (
     {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer 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`,
+        Authorization: `Bearer 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`,
       },
     }
   );
@@ -187,8 +192,6 @@ const sendMessage = async (
     conversationId: currentConversation!.id,
   });
 };
-
-const isLoadingSelector = (state: State) => state.loading;
 
 const currentConversationSelector = (state: State): Conversation | null => {
   if (!state.currentConversation) return null;
@@ -207,7 +210,6 @@ const useChat = () => {
 
 export {
   useChat,
-  isLoadingSelector,
   sendMessage,
   currentConversationSelector,
   addNewConversation,
