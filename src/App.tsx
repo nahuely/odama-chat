@@ -14,13 +14,12 @@ const router = createBrowserRouter([
     element: <Config />,
   },
   {
-    path: "/chat",
+    path: "/",
     element: <Chat />,
-    index: true,
   },
   {
     path: "*",
-    element: <Navigate to="/chat" />,
+    element: <Navigate to="/" />,
   },
 ]);
 
