@@ -35,7 +35,7 @@ export function Chat() {
                   <div className="drop-shadow-sm p-4 bg-white">
                     <div
                       className={`mb-3 ${
-                        isHuman(message) ? "text-[#10B981]" : "text-[#F97316]"
+                        isHuman(message) ? "text-emerald-600" : "text-odama"
                       }`}
                     >
                       {message.role}

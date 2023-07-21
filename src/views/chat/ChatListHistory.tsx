@@ -19,13 +19,13 @@ export function ChatMessage({
     <div
       className={`flex rounded-md p-2  items-center cursor-pointer 
        transition duration-300 ease-in-out hover:bg-slate-100 ${
-         currentConversation ? "bg-[#FDBA74]" : ""
+         currentConversation ? "bg-odamaTransparent" : ""
        }`}
       title="Seleccionar conversación"
       onClick={() => onClick(conversation.id)}
     >
       <div className="w-1/6 flex items-center justify-center mr-2">
-        <div className="rounded-full bg-[#FDBA74] w-10 h-10 flex items-center justify-center">
+        <div className="rounded-full bg-odamaLight w-10 h-10 flex items-center justify-center">
           <SeachIcon />
         </div>
       </div>
