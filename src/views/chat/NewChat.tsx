@@ -19,7 +19,7 @@ export function NewChat() {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          addNewConversation(
+          void addNewConversation(
             dispatch,
             state,
             configState,

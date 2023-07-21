@@ -8,7 +8,7 @@ import { useSnackbar } from "notistack";
 export function Chat() {
   const { state, dispatch } = useChat();
   const { enqueueSnackbar } = useSnackbar();
-  const bottomRef = React.useRef(null);
+  const bottomRef = React.useRef<null | HTMLDivElement>(null);
   const { state: configState } = useConfig();
   const [newMessage, setNewMessage] = React.useState("");
 
@@ -55,7 +55,7 @@ export function Chat() {
                 className="w-full"
                 onSubmit={(e) => {
                   e.preventDefault();
-                  sendMessage(
+                  void sendMessage(
                     dispatch,
                     state,
                     configState,
