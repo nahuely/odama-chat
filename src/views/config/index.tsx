@@ -4,7 +4,7 @@ import { Config } from "@/core/entities/config";
 
 type ConfigProviderProps = { children: React.ReactNode };
 
-type State = {
+export type State = {
   temperature: number;
   maxTokens: number;
   model: string;

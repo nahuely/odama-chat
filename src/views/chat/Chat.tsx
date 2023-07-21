@@ -1,10 +1,13 @@
 import { isHuman } from "@/core/entities/chat";
 import { currentConversationSelector, sendMessage, useChat } from "./";
+import { useConfig } from "@/views/config";
+
 import React from "react";
 
 export function Chat() {
   const { state, dispatch } = useChat();
   const bottomRef = React.useRef(null);
+  const { state: configState } = useConfig();
   const [newMessage, setNewMessage] = React.useState("");
 
   React.useEffect(() => {
@@ -50,7 +53,7 @@ export function Chat() {
                 className="w-full"
                 onSubmit={(e) => {
                   e.preventDefault();
-                  sendMessage(dispatch, state, newMessage);
+                  sendMessage(dispatch, state, configState, newMessage);
                   setNewMessage("");
                 }}
               >

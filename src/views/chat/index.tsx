@@ -4,6 +4,7 @@ import axios from "axios";
 import View from "./view";
 import { Conversation, Conversations } from "@core/entities/chat";
 import { API_ENDPOINT } from "@/core/constants";
+import { State as StateConfig } from "@/views/config";
 
 type State = {
   error: string | null;
@@ -124,26 +125,27 @@ const ChatProvider = () => {
 const addNewConversation = async (
   dispatch: Dispatch,
   state: State,
+  configState: StateConfig,
   prompt: string
 ) => {
   const newConversationId = state.conversation.length + 1;
   const response = await axios.post(
     API_ENDPOINT,
     {
-      model: "gpt-3.5-turbo",
+      model: configState.model,
       messages: [
         {
           role: "user",
           content: prompt,
         },
       ],
-      temperature: 0.5,
-      max_tokens: 256,
+      temperature: configState.temperature,
+      max_tokens: configState.maxTokens,
     },
     {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer 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`,
+        Authorization: `Bearer fasdfs`,
       },
     }
   );
@@ -159,6 +161,7 @@ const addNewConversation = async (
 const sendMessage = async (
   dispatch: Dispatch,
   state: State,
+  configState: StateConfig,
   message: string
 ) => {
   const currentConversation = currentConversationSelector(state);
@@ -166,7 +169,7 @@ const sendMessage = async (
   const response = await axios.post(
     API_ENDPOINT,
     {
-      model: "gpt-3.5-turbo",
+      model: configState.model,
       messages: [
         ...currentConversation!.messages,
         {
@@ -174,13 +177,13 @@ const sendMessage = async (
           content: message,
         },
       ],
-      temperature: 0.5,
-      max_tokens: 256,
+      temperature: configState.temperature,
+      max_tokens: configState.maxTokens,
     },
     {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer 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`,
+        Authorization: `Bearer fasdfs`,
       },
     }
   );

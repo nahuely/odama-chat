@@ -77,8 +77,8 @@ function View() {
                 }}
               >
                 <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
-                <option value="gpt-4-32k-0613">gpt-4-32k-0613</option>
-                <option value="gpt-4-32k">gpt-4-32k</option>
+                <option value="gpt-3.5-turbo-16k">gpt-3.5-turbo-16k</option>
+                <option value="gpt-3.5-turbo-0613">gpt-3.5-turbo-0613</option>
               </select>
             </div>
             <div className="mt-6">

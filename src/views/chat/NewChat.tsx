@@ -1,8 +1,10 @@
 import { addNewConversation, useChat } from "./";
+import { useConfig } from "@/views/config";
 import React from "react";
 
 export function NewChat() {
   const { state, dispatch } = useChat();
+  const { state: configState } = useConfig();
   const [newPrompt, setNewPrompt] = React.useState("");
 
   return (
@@ -15,7 +17,7 @@ export function NewChat() {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          addNewConversation(dispatch, state, newPrompt);
+          addNewConversation(dispatch, state, configState, newPrompt);
           setNewPrompt("");
         }}
       >
