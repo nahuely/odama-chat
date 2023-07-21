@@ -1,4 +1,8 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 import Chat from "@views/chat";
 import Config from "@/views/config/view";
 import ConfigProvider from "./views/config";
@@ -13,6 +17,10 @@ const router = createBrowserRouter([
     path: "/chat",
     element: <Chat />,
     index: true,
+  },
+  {
+    path: "*",
+    element: <Navigate to="/chat" />,
   },
 ]);
 
