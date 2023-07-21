@@ -10,8 +10,8 @@ const init = () => {
     localStorage.setItem(
       "config",
       JSON.stringify({
-        temperature: 0.5,
-        maxTokens: 256,
+        temperature: 1,
+        maxTokens: 200,
         model: "gpt-3.5-turbo",
       })
     );
