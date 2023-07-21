@@ -31,7 +31,8 @@ export function NewChat() {
       >
         <input
           type="text"
-          placeholder="Insertar prompt"
+          required
+          placeholder="Insertar prompt y presionar enter"
           onChange={(e) => {
             setNewPrompt(e.target.value);
           }}

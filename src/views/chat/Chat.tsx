@@ -51,33 +51,39 @@ export function Chat() {
 
           <div className="mt-auto">
             <div className="flex p-4">
-              <form
-                className="w-full"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  void sendMessage(
-                    dispatch,
-                    state,
-                    configState,
-                    enqueueSnackbar,
-                    newMessage
-                  );
-                  setNewMessage("");
-                }}
-              >
-                <input
-                  maxLength={1000}
-                  type="text"
-                  placeholder="Insertar prompt"
-                  onChange={(e) => {
-                    setNewMessage(e.target.value);
+              {state.sendingMessage ? (
+                <div className="animate-pulse h-16">Enviando mensaje ...</div>
+              ) : (
+                <form
+                  className="w-full"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    void sendMessage(
+                      dispatch,
+                      state,
+                      configState,
+                      enqueueSnackbar,
+                      newMessage
+                    );
+                    setNewMessage("");
                   }}
-                  value={newMessage}
-                  autoFocus
-                  className="border-2 border-slate-400 rounded w-full p-2 mb-1"
-                />
-                <p className="text-right text-xs">{newMessage.length}/1000</p>
-              </form>
+                >
+                  <input
+                    disabled={state.sendingMessage}
+                    required
+                    maxLength={1000}
+                    type="text"
+                    placeholder="Insertar prompt y presionar enter"
+                    onChange={(e) => {
+                      setNewMessage(e.target.value);
+                    }}
+                    value={newMessage}
+                    autoFocus
+                    className="border-2 border-slate-400 rounded w-full p-2 mb-1"
+                  />
+                  <p className="text-right text-xs">{newMessage.length}/1000</p>
+                </form>
+              )}
             </div>
           </div>
         </div>

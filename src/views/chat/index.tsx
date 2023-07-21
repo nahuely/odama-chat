@@ -11,6 +11,7 @@ type State = {
   error: string | null;
   conversation: Conversations;
   currentConversation: number | null;
+  sendingMessage: boolean;
 };
 
 type Action =
@@ -22,7 +23,11 @@ type Action =
       response: string;
       conversationId: number;
     }
-  | { type: "delete_chat"; id: number };
+  | { type: "delete_chat"; id: number }
+  | {
+      type: "set_sending_message";
+      sendingMessage: boolean;
+    };
 
 type Dispatch = (action: Action) => void;
 
@@ -38,6 +43,12 @@ const cardsReducer = (state: State, action: Action): State => {
         conversation: state.conversation.filter(
           (conversation) => conversation.id !== action.id
         ),
+      };
+    }
+    case "set_sending_message": {
+      return {
+        ...state,
+        sendingMessage: action.sendingMessage,
       };
     }
     case "add_conversation": {
@@ -112,6 +123,7 @@ const ChatProvider = () => {
     error: null,
     conversation: conversations,
     currentConversation: null,
+    sendingMessage: false,
   });
 
   const value = React.useMemo(
@@ -187,6 +199,11 @@ const sendMessage = async (
 ) => {
   const currentConversation = currentConversationSelector(state);
 
+  dispatch({
+    type: "set_sending_message",
+    sendingMessage: true,
+  });
+
   try {
     const response = await axios.post(
       API_ENDPOINT,
@@ -220,6 +237,11 @@ const sendMessage = async (
     console.error(error);
     enqueueSnackbar("Hubo un error al enviar el mensaje", {
       variant: "error",
+    });
+  } finally {
+    dispatch({
+      type: "set_sending_message",
+      sendingMessage: false,
     });
   }
 };
