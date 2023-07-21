@@ -8,7 +8,11 @@ function View() {
   return (
     <div className="container mx-auto bg-slate-50 min-h-screen">
       <nav className="bg-[#F97316] p-6 justify-end flex">
-        <Link className="border-2 border-white rounded p-1" to={`/config`}>
+        <Link
+          className="border-2 border-white rounded p-1"
+          to={`/config`}
+          title="Configuration"
+        >
           <GearIcon />
         </Link>
       </nav>

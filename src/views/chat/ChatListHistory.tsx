@@ -16,22 +16,27 @@ export function ChatMessage({
 }) {
   return (
     <div
-      className={`flex rounded-md p-2  items-center cursor-pointer hover:bg-slate-100 ${
-        currentConversation ? "bg-[#FDBA74]" : ""
-      }`}
+      className={`flex rounded-md p-2  items-center cursor-pointer 
+       transition duration-300 ease-in-out hover:bg-slate-100 ${
+         currentConversation ? "bg-[#FDBA74]" : ""
+       }`}
+      title="Seleccionar conversación"
       onClick={() => onClick(conversation.id)}
     >
-      <div className="w-1/6 flex items-center justify-center">
-        <div className="rounded-full bg-[#FDBA74] w-7 h-7 flex items-center justify-center">
+      <div className="w-1/6 flex items-center justify-center mr-2">
+        <div className="rounded-full bg-[#FDBA74] w-10 h-10 flex items-center justify-center">
           <SeachIcon />
         </div>
       </div>
-      <div className="w-full">
-        <div>{conversation.title}</div>
+      <div className="w-4/6">
+        <div className="text-ellipsis overflow-hidden">
+          {conversation.title}
+        </div>
       </div>
-      <div className="w-1/6 flex">
+      <div className="w-1/6 flex align-middle justify-center">
         {!currentConversation && (
           <div
+            title="Eliminar conversación"
             onClick={() => {
               onDelete(conversation.id);
             }}
