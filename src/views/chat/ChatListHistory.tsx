@@ -2,6 +2,7 @@ import { Conversation } from "@/core/entities/chat";
 import { useChat } from "./";
 import { SeachIcon } from "@/components/SeachIcon";
 import { TrashIcon } from "@/components/TrashIcon";
+import { useSnackbar } from "notistack";
 
 export function ChatMessage({
   conversation,
@@ -51,6 +52,7 @@ export function ChatMessage({
 
 export function ChatListHistory() {
   const { state, dispatch } = useChat();
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <div className="rounded-md bg-white drop-shadow-md">
@@ -72,10 +74,20 @@ export function ChatListHistory() {
               key={conversation.id}
               conversation={conversation}
               onDelete={(id) => {
-                dispatch({
-                  type: "delete_chat",
-                  id: id,
-                });
+                try {
+                  dispatch({
+                    type: "delete_chat",
+                    id: id,
+                  });
+                  enqueueSnackbar("Conversación eliminada", {
+                    variant: "success",
+                  });
+                } catch (error) {
+                  console.error(error);
+                  enqueueSnackbar("Hubo un error al eliminar la conversación", {
+                    variant: "error",
+                  });
+                }
               }}
               onClick={(id) => {
                 dispatch({
