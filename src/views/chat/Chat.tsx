@@ -26,10 +26,10 @@ export function Chat() {
         </div>
       ) : (
         <div className="flex flex-col h-full">
-          <div className="overflow-y-scroll h-[500px]">
+          <div className="overflow-y-scroll h-[500px] bg-slate-50">
             {currentConversationSelector(state)?.messages.map(
               (message, index) => (
-                <div className="bg-slate-50 p-4" key={index}>
+                <div className="p-4" key={index}>
                   <div className="drop-shadow-sm p-4 bg-white">
                     <div
                       className={`mb-3 ${
