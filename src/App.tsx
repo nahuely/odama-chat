@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Chat from "./views/chat";
-import Config from "./views/config";
+import Chat from "@views/chat";
+import Config from "@views/config";
 
 const router = createBrowserRouter(
   [

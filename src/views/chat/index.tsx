@@ -1,113 +1,216 @@
-import { Link } from "react-router-dom";
-import { SeachIcon } from "@components/SeachIcon";
-import { CheckIcon } from "@components/CheckIcon";
-import { CloseIcon } from "@components/CloseIcon";
-import { GearIcon } from "@components/GearIcon";
-import { BackIcon } from "@components/BackIcon";
+import React from "react";
+import axios from "axios";
 
-function ChatMessage() {
-  return (
-    <div className="flex rounded-md h-20 items-center">
-      <div className="w-1/6 flex items-center justify-center">
-        <div className="rounded-full bg-[#FDBA74] w-7 h-7 flex items-center justify-center">
-          <SeachIcon />
-        </div>
-      </div>
-      <div className="w-full">
-        <div>User Flow</div>
-        <div>Hoy, quedan 24 hs.</div>
-      </div>
-      <div className="w-1/6 flex">
-        <div>
-          <CheckIcon />
-        </div>
-        <div>
-          <CloseIcon />
-        </div>
-      </div>
-    </div>
+import View from "./view";
+import { Conversation, Conversations } from "@core/entities/chat";
+import { API_ENDPOINT } from "@/core/constants";
+
+type State = {
+  error: string | null;
+  loading: boolean;
+  conversation: Conversations;
+  currentConversation: number | null;
+};
+
+type Action =
+  | { type: "select_chat"; id: number }
+  | { type: "add_conversation"; request: string; response: string; id: number }
+  | {
+      type: "add_message";
+      request: string;
+      response: string;
+      conversationId: number;
+    };
+
+type Dispatch = (action: Action) => void;
+
+const Context = React.createContext<
+  { state: State; dispatch: Dispatch } | undefined
+>(undefined);
+
+const cardsReducer = (state: State, action: Action): State => {
+  switch (action.type) {
+    case "add_conversation": {
+      return {
+        ...state,
+        conversation: [
+          ...state.conversation,
+          {
+            id: action.id,
+            title: action.request,
+            messages: [
+              {
+                role: "user",
+                content: action.request,
+              },
+              {
+                role: "assistant",
+                content: action.response,
+              },
+            ],
+          },
+        ],
+        currentConversation: state.conversation.length + 1,
+      };
+    }
+    case "select_chat": {
+      return {
+        ...state,
+        currentConversation: action.id,
+      };
+    }
+    case "add_message": {
+      const conversation = state.conversation.find(
+        (conversation) => conversation.id === action.conversationId
+      );
+      if (!conversation) return state;
+      return {
+        ...state,
+        conversation: [
+          ...state.conversation.filter(
+            (conversation) => conversation.id !== action.conversationId
+          ),
+          {
+            ...conversation,
+            messages: [
+              ...conversation.messages,
+              {
+                role: "user",
+                content: action.request,
+              },
+              {
+                role: "assistant",
+                content: action.response,
+              },
+            ],
+          },
+        ],
+      };
+    }
+    default: {
+      throw new Error("this action doesn't exist");
+    }
+  }
+};
+
+const ChatProvider = () => {
+  const [state, dispatch] = React.useReducer(cardsReducer, {
+    error: null,
+    loading: true,
+    conversation: [],
+    currentConversation: null,
+  });
+
+  const value = React.useMemo(
+    () => ({
+      state,
+      dispatch,
+    }),
+    [state]
   );
-}
 
-function Chat() {
   return (
-    <div className="container mx-auto bg-slate-50 min-h-screen">
-      <nav className="bg-[#F97316] p-6 justify-between flex">
-        <Link className="border-2 border-white rounded p-1" to={`/chat`}>
-          <BackIcon />
-        </Link>
-
-        <Link className="border-2 border-white rounded p-1" to={`/config`}>
-          <GearIcon />
-        </Link>
-      </nav>
-      <section className="p-6 flex space-x-6">
-        <aside className="w-2/6 flex space-y-6 flex-col">
-          <div className="rounded-md bg-white p-6 drop-shadow-md">
-            <h3 className="text-xl text-slate-800 mb-3">Sistema</h3>
-            <p className="mb-6">
-              Para conseguir una respuesta adecuada a tus necesidades, escribe
-              un prompt para el sistema.
-            </p>
-            <input
-              type="text"
-              placeholder="Insertar prompt"
-              className="border-2 border-slate-400 rounded w-full p-2"
-            />
-          </div>
-
-          <div className="rounded-md bg-white drop-shadow-md">
-            <div className="p-6">
-              <h5>Historial de Búsquedas</h5>
-            </div>
-
-            <hr />
-
-            <div className="p-6">
-              <ChatMessage />
-              <ChatMessage />
-              <ChatMessage />
-              <ChatMessage />
-            </div>
-          </div>
-        </aside>
-        <main className="rounded-md bg-white w-4/6 drop-shadow-md flex flex-col">
-          <div className="flex justify-between p-6">
-            <div>OdamaChat</div>
-            <button>Nueva Búsqueda</button>
-          </div>
-          <hr />
-          <div className="bg-slate-50 p-4 h-full">
-            <div className="drop-shadow-sm p-4 bg-white">
-              <div className="mb-3">
-                Ana Clara <span>05:00 pm</span>
-              </div>
-              <hr className="mb-3" />
-              <div>
-                Lorem ipsum dolor Sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Sit amet, consectetur
-                adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat.
-              </div>
-            </div>
-          </div>
-          <div className="mt-auto">
-            <div className="flex p-4">
-              <input
-                type="text"
-                placeholder="Insertar prompt"
-                className="border-2 border-slate-400 rounded w-full p-2"
-              />
-            </div>
-          </div>
-        </main>
-      </section>
-    </div>
+    <Context.Provider value={value}>
+      <View />
+    </Context.Provider>
   );
-}
+};
 
-export default Chat;
+const addNewConversation = async (
+  dispatch: Dispatch,
+  state: State,
+  prompt: string
+) => {
+  const newConversationId = state.conversation.length + 1;
+  const response = await axios.post(
+    API_ENDPOINT,
+    {
+      model: "gpt-3.5-turbo",
+      messages: [
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+      temperature: 0.5,
+      max_tokens: 256,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer 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`,
+      },
+    }
+  );
+
+  dispatch({
+    type: "add_conversation",
+    id: newConversationId,
+    request: prompt,
+    response: response.data.choices[0].message.content as string,
+  });
+};
+
+const sendMessage = async (
+  dispatch: Dispatch,
+  state: State,
+  message: string
+) => {
+  const currentConversation = currentConversationSelector(state);
+
+  const response = await axios.post(
+    API_ENDPOINT,
+    {
+      model: "gpt-3.5-turbo",
+      messages: [
+        ...currentConversation!.messages,
+        {
+          role: "user",
+          content: message,
+        },
+      ],
+      temperature: 0.5,
+      max_tokens: 256,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer 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`,
+      },
+    }
+  );
+
+  dispatch({
+    type: "add_message",
+    request: message,
+    response: response.data.choices[0].message.content,
+    conversationId: currentConversation!.id,
+  });
+};
+
+const isLoadingSelector = (state: State) => state.loading;
+
+const currentConversationSelector = (state: State): Conversation | null => {
+  if (!state.currentConversation) return null;
+  return (
+    state.conversation.find(
+      (conversation) => conversation.id === state.currentConversation
+    ) || null
+  );
+};
+
+const useChat = () => {
+  const context = React.useContext(Context);
+  if (!context) throw new Error(`useChat must be used within a ChatProvider`);
+  return context;
+};
+
+export {
+  useChat,
+  isLoadingSelector,
+  sendMessage,
+  currentConversationSelector,
+  addNewConversation,
+};
+
+export default ChatProvider;
